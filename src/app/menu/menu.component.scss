@@ -1,0 +1,15 @@
+.cabecera{
+    position: center;
+    height: 50px;
+    background-color: darkred;
+
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+}
+
+
+
+.cabecera > div > a{
+    color: white;
+}

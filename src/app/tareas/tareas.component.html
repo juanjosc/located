@@ -1,0 +1,55 @@
+<p>tareas works!</p>
+<div class="formulario">
+    <form>
+        TAREA: <br>
+        email: <input type="text" [(ngModel)]="nuevaTarea.email" [ngModelOptions]="{standalone: true}" /> | <br>
+        first_name: <input type="text" [(ngModel)]="nuevaTarea.first_name" [ngModelOptions]="{standalone: true}" /> |
+        <br>
+        last_name: <input type="text" [(ngModel)]="nuevaTarea.last_name" [ngModelOptions]="{standalone: true}" /> | <br>
+
+        <button (click)="anyadirTarea()">GUARDAR</button>
+        <button (click)="reiniciar()">RESET</button>
+
+        <br><br>
+
+        Nombre: {{nuevaTarea.email}} <br>
+        Apellidos: {{nuevaTarea.first_name}} <br>
+        last_name: {{nuevaTarea.last_name}}
+
+    </form>
+</div>
+
+<div class="lista">
+    <br><br>
+    LISTA: <br>
+    <button (click)="getTareas()">Cargar Tareas</button>
+    
+    <ul>
+        <li *ngFor="let tarea of tareas" class="list-group-item">
+            {{tarea.email}} {{tarea.first_name}} {{tarea.last_name}}
+
+            <div *ngIf="tarea.editando">
+                Nombre: <input type="text" [(ngModel)]="tarea.email" [ngModelOptions]="{standalone: true}" /> |
+                Apellidos: <input type="text" [(ngModel)]="tarea.first_name" [ngModelOptions]="{standalone: true}" /> |
+                Visible: <input type="text" [(ngModel)]="tarea.last_name" [ngModelOptions]="{standalone: true}" />
+            </div>
+
+
+            <button *ngIf="!tarea.editando" (click)="tarea.editando = !tarea.editando"
+                class="btn btn-outline-warning">Editar</button>
+
+            <div *ngIf="tarea.editando">
+                <button (click)="setTareas()" class="btn btn-success">Guardar</button>
+                <button (click)="tarea.editando = !tarea.editando; getTareasLocal()" class="btn btn-danger">Cancelar</button>
+            </div>
+
+            <button (click)="borrarTarea(tarea); setTareas()" class="btn btn-outline-dark">Borrar</button>
+
+        </li>
+    </ul>
+    
+    <button [disabled]="!(paginaActual > 1)" (click)="previousPage()"><</button>
+    <span style="margin: 1rem">Pagina {{paginaActual}}</span>
+    <button [disabled]="!(response?.total_pages !== paginaActual)" (click)="nextPage()">></button>
+
+</div>

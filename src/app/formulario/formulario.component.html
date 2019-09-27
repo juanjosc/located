@@ -1,0 +1,11 @@
+<p>formulario works!</p>
+
+<form>
+    Nombre:<input type="text" [(ngModel)]="nombre" [ngModelOptions]="{standalone: true}"/> |
+    Apellidos: <input type="text" [(ngModel)]="apellidos" [ngModelOptions]="{standalone: true}"/>
+    <button (click)="reiniciar()">Reset</button>
+    <br>
+
+    Nombre: {{nombre}}, apellidos: {{apellidos}}
+
+</form>

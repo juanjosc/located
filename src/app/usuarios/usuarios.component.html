@@ -1,0 +1,106 @@
+<p>usuarios works!</p>
+{{usuario}}
+<button (click)="setUsuarios()">Guardar usuarios</button>
+<button (click)="getUsuarios()">Cargar usuarios</button>
+
+<div>
+    <ul>
+        <!--Es un For each  donde usuario hace referencias al array en el .ts
+            usuario es la variable local actual-->
+        <li *ngFor="let user of usuarios">
+            <p *ngIf="!user.editanto" [class.color-red]="user.visible">
+                {{user.nombre}} {{user.apellidos}}
+            </p>
+
+            <div *ngIf="user.editando">
+                Nombre: <input type="text" [(ngModel)]="user.nombre" [ngModelOptions]="{standalone: true}" /> |
+                Apellidos: <input type="text" [(ngModel)]="user.apellidos" [ngModelOptions]="{standalone: true}" /> |
+                Visible: <input type="checkbox" [(ngModel)]="user.visible" [ngModelOptions]="{standalone: true}" />
+            </div>
+
+
+            <button *ngIf="!user.editando" (click)="user.editando = !user.editando" class="btn btn-outline-warning">Editar</button>
+
+            <div *ngIf="user.editando">
+                <button (click)="setUsuarios()" class="btn btn-success">Guardar</button>
+                <button (click)="user.editando = !user.editando; getUsuarios()" class="btn btn-danger">Cancelar</button>
+            </div>
+
+
+            <button (click)="deleteUsuario(user.id); setUsuarios()" class="btn btn-outline-dark">Borrar</button>
+            <!-- <p [style.color]="user.visible ? 'green' :'red'">
+                    {{user.nombre}} {{user.apellidos}} 
+                </p>-->
+
+            <!--<span *ngIf="usuario.visible">*</span>-->
+        </li>
+
+
+    </ul>
+</div>
+
+<br>
+
+<form>
+    Nombre:<input type="text" [(ngModel)]="nuevoUsuario.nombre" [ngModelOptions]="{standalone: true}" /> |
+    <br>
+    Apellidos: <input type="text" [(ngModel)]="nuevoUsuario.apellidos" [ngModelOptions]="{standalone: true}" />
+    <br>
+    Visible: <input type="checkbox" [(ngModel)]="nuevoUsuario.visible" [ngModelOptions]="{standalone: true}" />
+    <br><br>
+    <button (click)="reiniciar()">Reset</button>
+    <button (click)="addUsuario();reiniciar()">Añadir usuario</button>
+
+    <br><br>
+
+    Nombre: {{nuevoUsuario.nombre}} <br>
+    Apellidos: {{nuevoUsuario.apellidos}} <br>
+    Visible: {{nuevoUsuario.visible}}
+</form>
+
+<br><br>
+<!--Realizar la taba en angular material
+    con el datasource hacemos referencia a nuestro array usuarios para que se
+    vaya actualizando la tabla conforme añademos nuevos usuarios-->
+
+<mat-form-field class="filtroNombre">
+    <input matInput (keyup)="customFilter('nombre', $event.target.value)" placeholder="nombre">
+</mat-form-field>
+<mat-form-field class="filtroApellidos">
+    <input matInput (keyup)="customFilter('apellidos', $event.target.value)" placeholder="apellido">
+</mat-form-field>
+
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+
+    <!-- id Column -->
+    <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> id </th>
+        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+    </ng-container>
+
+    <!-- nombre Column -->
+    <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef> Nombre </th>
+        <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+    </ng-container>
+
+    <!-- apellidos Column -->
+    <ng-container matColumnDef="apellidos">
+        <th mat-header-cell *matHeaderCellDef> Apellidos </th>
+        <td mat-cell *matCellDef="let element"> {{element.apellidos}} </td>
+    </ng-container>
+
+    <!-- visible Column -->
+    <ng-container matColumnDef="visible">
+        <th mat-header-cell *matHeaderCellDef> Visible </th>
+        <td mat-cell *matCellDef="let element"> {{element.visible}} </td>
+    </ng-container>
+    <!-- referenciamos las columnas definidas en el css -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+<mat-paginator [pageSizeOptions]="[5,10,20]" showFirstLastButtons></mat-paginator>
